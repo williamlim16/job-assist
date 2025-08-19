@@ -12,16 +12,34 @@ import { index, pgTableCreator } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `job-assist_${name}`);
 
-export const posts = createTable(
-  "post",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-  }),
-  (t) => [index("name_idx").on(t.name)],
-);
+export const resume = createTable("resume", (d) => ({
+  id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+  title: d.text().notNull(),
+  filePath: d.text().notNull(),
+  content: d.text(),
+  createdAt: d
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+}));
+
+// export const resume = createTable(
+//   "resume",
+//   (d) => ({
+//     id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+//     company: d.varchar({ length: 256 }),
+//     filePath: d.text(),
+//     createdAt: d
+//       .timestamp({ withTimezone: true })
+//       .default(sql`CURRENT_TIMESTAMP`)
+//       .notNull(),
+//     updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+//   }),
+//   (t) => [index("name_idx").on(t.company)],
+// );
+//
+//
+export type InsertResume = typeof resume.$inferInsert;
+export type SelectResume = typeof resume.$inferSelect;
+export type NullishResume = SelectResume | undefined;

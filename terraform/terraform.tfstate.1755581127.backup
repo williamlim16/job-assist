@@ -1,0 +1,106 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.2",
+  "serial": 4,
+  "lineage": "7b0f1c5e-be12-747c-c104-494173d0896d",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "google_compute_backend_bucket",
+      "name": "cdn_backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket_name": "job-assist-cloud-bucket",
+            "cdn_policy": [
+              {
+                "bypass_cache_on_request_headers": [],
+                "cache_key_policy": [],
+                "cache_mode": "CACHE_ALL_STATIC",
+                "client_ttl": 3600,
+                "default_ttl": 3600,
+                "max_ttl": 86400,
+                "negative_caching": true,
+                "negative_caching_policy": [],
+                "request_coalescing": true,
+                "serve_while_stale": 86400,
+                "signed_url_cache_max_age_sec": 0
+              }
+            ],
+            "compression_mode": "",
+            "creation_timestamp": "2025-08-18T22:20:38.364-07:00",
+            "custom_response_headers": null,
+            "description": "",
+            "edge_security_policy": "",
+            "enable_cdn": true,
+            "id": "projects/job-assist-469408/global/backendBuckets/job-assist-cloud-bucket-cdn-backend",
+            "name": "job-assist-cloud-bucket-cdn-backend",
+            "project": "job-assist-469408",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/job-assist-469408/global/backendBuckets/job-assist-cloud-bucket-cdn-backend",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_storage_bucket.file_host_bucket"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_storage_bucket",
+      "name": "file_host_bucket",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "autoclass": [],
+            "cors": [],
+            "custom_placement_config": [],
+            "default_event_based_hold": false,
+            "effective_labels": {},
+            "enable_object_retention": false,
+            "encryption": [],
+            "force_destroy": true,
+            "id": "job-assist-cloud-bucket",
+            "labels": null,
+            "lifecycle_rule": [],
+            "location": "AUSTRALIA-SOUTHEAST1",
+            "logging": [],
+            "name": "job-assist-cloud-bucket",
+            "project": "job-assist-469408",
+            "project_number": 206313483963,
+            "public_access_prevention": "inherited",
+            "requester_pays": false,
+            "retention_policy": [],
+            "rpo": null,
+            "self_link": "https://www.googleapis.com/storage/v1/b/job-assist-cloud-bucket",
+            "soft_delete_policy": [
+              {
+                "effective_time": "2025-08-19T05:20:37.206Z",
+                "retention_duration_seconds": 604800
+              }
+            ],
+            "storage_class": "STANDARD",
+            "terraform_labels": {},
+            "timeouts": null,
+            "uniform_bucket_level_access": true,
+            "url": "gs://job-assist-cloud-bucket",
+            "versioning": [],
+            "website": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsInJlYWQiOjI0MDAwMDAwMDAwMCwidXBkYXRlIjoyNDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
