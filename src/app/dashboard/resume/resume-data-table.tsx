@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Eye, Edit3, Download, MoreHorizontal, Search } from "lucide-react";
 import type { SelectResume } from "@/server/db/schema";
+import Link from "next/link";
 
 type Props = {
   resume: SelectResume[];
@@ -98,10 +99,12 @@ export default function ResumeTable({ resume }: Props) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Edit3 className="mr-2 h-4 w-4" />
-                        Edit
-                      </DropdownMenuItem>
+                      <Link href={`/dashboard/resume/${resume.id}`}>
+                        <DropdownMenuItem>
+                          <Edit3 className="mr-2 h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                      </Link>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

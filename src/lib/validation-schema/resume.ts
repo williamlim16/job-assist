@@ -1,6 +1,7 @@
 import z from "zod";
 
-export const createResumeSchema = z.object({
-  title: z.string("Title is required"),
-  content: z.string("Content is required"),
+export const createEditResumeSchema = z.object({
+  id: z.number().optional(),
+  title: z.string({ description: "Title is required" }),
+  content: z.string({ description: "Content is required" }),
 });

@@ -9,10 +9,10 @@ import {
 import { Plus } from "lucide-react";
 import ResumeTable from "./resume-data-table";
 import Link from "next/link";
-import { getResume } from "@/server/services/resume-service";
+import { getResumeList } from "@/server/services/resume-service";
 
 export default async function Page() {
-  const resumes = await getResume();
+  const resumes = await getResumeList();
   return (
     <>
       <div className="space-y-6">
