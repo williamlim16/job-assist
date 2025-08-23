@@ -15,7 +15,7 @@ export const createTable = pgTableCreator((name) => `job-assist_${name}`);
 export const resume = createTable("resume", (d) => ({
   id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
   title: d.text().notNull(),
-  filePath: d.text(),
+  filePath: d.text().notNull(),
   content: d.text(),
   createdAt: d
     .timestamp({ withTimezone: true })
