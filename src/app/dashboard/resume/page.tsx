@@ -9,8 +9,10 @@ import {
 import { Plus } from "lucide-react";
 import ResumeTable from "./resume-data-table";
 import Link from "next/link";
+import { getResume } from "@/server/services/resume-service";
 
-export default function Page() {
+export default async function Page() {
+  const resumes = await getResume();
   return (
     <>
       <div className="space-y-6">
@@ -38,7 +40,7 @@ export default function Page() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ResumeTable />
+            <ResumeTable resume={resumes} />
           </CardContent>
         </Card>
       </div>

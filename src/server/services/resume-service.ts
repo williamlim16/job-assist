@@ -18,3 +18,8 @@ export async function createResume(prevState: unknown, formData: FormData) {
     });
   });
 }
+
+export async function getResume() {
+  const resumeRepository = new ResumeRepository();
+  return await resumeRepository.findMany({});
+}
