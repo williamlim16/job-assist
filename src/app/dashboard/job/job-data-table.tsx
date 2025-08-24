@@ -99,7 +99,7 @@ export default function JobTable({ job }: Props) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <Link href={`/dashboard/resume/${job.id}`}>
+                      <Link href={`/dashboard/job/${job.id}`}>
                         <DropdownMenuItem>
                           <Edit3 className="mr-2 h-4 w-4" />
                           Edit

@@ -23,7 +23,7 @@ export default async function Page() {
               Manage and track all your jobs
             </p>
           </div>
-          <Link href={"/dashboard/resume/add"}>
+          <Link href={"/dashboard/job/add"}>
             <Button className="bg-primary hover:bg-primary/90">
               <Plus className="mr-2 h-4 w-4" />
               New Job
