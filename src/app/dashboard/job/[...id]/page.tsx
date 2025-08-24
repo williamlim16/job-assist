@@ -8,17 +8,18 @@ import {
 } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { getResumeById } from "@/server/services/resume-service";
 import { headers } from "next/headers";
+import { getJobById } from "@/server/services/job-service";
+import { JobForm } from "./job-form";
 
 export default async function Page() {
-  // const headersList = await headers();
-  // const currentPathname = headersList.get("x-pathname");
-  // const resumeId = currentPathname?.split("/").pop();
-  // let resume = undefined;
-  // if (resumeId && typeof Number(resumeId) === "number") {
-  //   resume = await getResumeById(Number(resumeId));
-  // }
+  const headersList = await headers();
+  const currentPathname = headersList.get("x-pathname");
+  const jobId = currentPathname?.split("/").pop();
+  let job = undefined;
+  if (jobId && parseInt(jobId)) {
+    job = await getJobById(Number(jobId));
+  }
 
   return (
     <div className="space-y-6">
@@ -31,20 +32,22 @@ export default async function Page() {
         </Link>
         <div>
           <h1 className="text-foreground text-3xl font-bold">
-            {/* {resume?.id ? "Edit resume" : "Create new resume"} */}
+            {job?.id ? "Edit job" : "Create new job"}
           </h1>
-          <p className="text-muted-foreground">Add a new resume</p>
+          <p className="text-muted-foreground">Add a new job</p>
         </div>
       </div>
       {/* Form */}
       <Card>
         <CardHeader>
-          <CardTitle>Resume Details</CardTitle>
+          <CardTitle>Job Details</CardTitle>
           <CardDescription>
-            Provide a title and your resume content
+            Provide a title and your job description
           </CardDescription>
         </CardHeader>
-        <CardContent>{/* <ResumeForm resume={resume} /> */}</CardContent>
+        <CardContent>
+          <JobForm job={job} />
+        </CardContent>
       </Card>
     </div>
   );
