@@ -15,7 +15,7 @@ export const createTable = pgTableCreator((name) => `job-assist_${name}`);
 export const resume = createTable("resume", (d) => ({
   id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
   title: d.text().notNull(),
-  filePath: d.text().notNull(),
+  filePath: d.text(),
   content: d.text(),
   createdAt: d
     .timestamp({ withTimezone: true })
@@ -43,3 +43,20 @@ export const resume = createTable("resume", (d) => ({
 export type InsertResume = typeof resume.$inferInsert;
 export type SelectResume = typeof resume.$inferSelect;
 export type NullishResume = SelectResume | undefined;
+
+export const job = createTable("job", (d) => ({
+  id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+  title: d.text().notNull(),
+  description: d.text().notNull(),
+  url: d.text(),
+  resumeId: d.integer().references(() => resume.id),
+  createdAt: d
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+}));
+
+export type InsertJob = typeof job.$inferInsert;
+export type SelectJob = typeof job.$inferSelect;
+export type NullishJob = SelectResume | undefined;
