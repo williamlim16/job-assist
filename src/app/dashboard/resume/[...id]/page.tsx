@@ -17,7 +17,7 @@ export default async function Page() {
   const currentPathname = headersList.get("x-pathname");
   const resumeId = currentPathname?.split("/").pop();
   let resume = undefined;
-  if (resumeId) {
+  if (resumeId && parseInt(resumeId)) {
     resume = await getResumeById(Number(resumeId));
   }
 
