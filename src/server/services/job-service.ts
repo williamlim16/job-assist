@@ -2,7 +2,7 @@
 
 import { parseWithZod } from "@conform-to/zod";
 import { JobRepository } from "../repository/job-repository";
-import type { SelectResume } from "../db/schema";
+import type { SelectJob, SelectResume } from "../db/schema";
 import { createEditJobSchema } from "@/lib/validation-schema/job";
 
 export async function createEditJob(prevState: unknown, formData: FormData) {
@@ -46,7 +46,30 @@ export async function getJobList() {
   return await resumeRepository.findMany({});
 }
 
-export async function getJobById(id: SelectResume["id"]) {
+export async function getJobById(id: SelectJob["id"]) {
   const resumeRepository = new JobRepository();
   return await resumeRepository.findById(id);
+}
+
+export async function saveResumeReference(
+  resumeId: SelectResume["id"],
+  jobId: SelectJob["id"],
+) {
+  const jobRepository = new JobRepository();
+  jobRepository
+    .update(jobId, {
+      resumeId: resumeId,
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        success: false,
+        error: "Error database",
+      };
+    });
+
+  return {
+    success: true,
+    error: undefined,
+  };
 }

@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import { index, pgEnum, pgTableCreator } from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -44,12 +44,22 @@ export type InsertResume = typeof resume.$inferInsert;
 export type SelectResume = typeof resume.$inferSelect;
 export type NullishResume = SelectResume | undefined;
 
+export const jobStatusEnum = pgEnum("status", [
+  "draft",
+  "applied",
+  "lead",
+  "rejected",
+  "accepted",
+]);
 export const job = createTable("job", (d) => ({
   id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
   title: d.text().notNull(),
   description: d.text().notNull(),
   url: d.text(),
+  coverLetter: d.text(),
+  status: jobStatusEnum().default("draft"),
   resumeId: d.integer().references(() => resume.id),
+  dateApplied: d.timestamp({ withTimezone: true }),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
