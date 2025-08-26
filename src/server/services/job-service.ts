@@ -21,6 +21,7 @@ export async function createEditJob(prevState: unknown, formData: FormData) {
         title: submission.value.title,
         url: submission.value.url,
         resumeId: submission.value.resumeId,
+        coverLetter: submission.value.coverLetter,
       })
       .catch((error) => {
         return submission.reply({

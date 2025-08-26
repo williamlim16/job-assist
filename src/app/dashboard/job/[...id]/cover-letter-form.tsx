@@ -18,7 +18,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { SelectJob, SelectResume } from "@/server/db/schema";
-import { saveResumeReference } from "@/server/services/job-service";
+import {
+  createEditJob,
+  saveResumeReference,
+} from "@/server/services/job-service";
+import { FormTextArea } from "@/components/form/text-area";
+import { useForm } from "@conform-to/react";
+import { createEditJobSchema } from "@/lib/validation-schema/job";
+import { parseWithZod } from "@conform-to/zod";
+import { useActionState } from "react";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   job: SelectJob | undefined;
@@ -36,6 +45,22 @@ export default function CoverLetterForm({ job, resumeList }: Props) {
     if (!job || !id) return;
     await saveResumeReference(id, job.id);
   }, [id, job]);
+
+  const [lastResult, action] = useActionState(createEditJob, undefined);
+  const [form, fields] = useForm({
+    defaultValue: {
+      id: job?.id,
+      description: job?.description,
+      title: job?.title,
+      coverLetter: job?.coverLetter,
+    },
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: createEditJobSchema });
+    },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+  });
 
   return (
     <>
@@ -86,7 +111,43 @@ export default function CoverLetterForm({ job, resumeList }: Props) {
         </Popover>
 
         <Button onClick={connectResume}>Use Resume</Button>
+
+        <Button>Generate Cover Letter</Button>
       </div>
+
+      {job?.resumeId && (
+        <div>
+          <form
+            className="pt-4"
+            id={form.id}
+            action={action}
+            onSubmit={form.onSubmit}
+            noValidate
+          >
+            <FormTextArea
+              description="Your cover letter based on resume"
+              required={true}
+              label={"Cover letter content"}
+              errors={fields.coverLetter.errors}
+              inputProps={{
+                disabled: job.resumeId ? false : true,
+                name: fields.coverLetter.name,
+                defaultValue: fields.coverLetter.defaultValue,
+                id: fields.coverLetter.id,
+              }}
+            />
+            <Input type="hidden" name={fields.title.name} value={job?.title} />
+            <Input type="hidden" name={fields.id.name} value={job?.id} />
+            <Input
+              type="hidden"
+              name={fields.description.name}
+              value={job?.description}
+            />
+
+            <Button type="submit">Save Cover Letter</Button>
+          </form>
+        </div>
+      )}
     </>
   );
 }
