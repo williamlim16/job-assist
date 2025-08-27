@@ -20,6 +20,7 @@ import {
 import type { SelectJob, SelectResume } from "@/server/db/schema";
 import {
   createEditJob,
+  generateCoverLetter,
   saveResumeReference,
 } from "@/server/services/job-service";
 import { FormTextArea } from "@/components/form/text-area";
@@ -61,6 +62,14 @@ export default function CoverLetterForm({ job, resumeList }: Props) {
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
+
+  async function handleCoverLetter() {
+    if (!job?.id) {
+      console.log("Error job not found");
+      return;
+    }
+    await generateCoverLetter(job.id);
+  }
 
   return (
     <>
@@ -112,7 +121,7 @@ export default function CoverLetterForm({ job, resumeList }: Props) {
 
         <Button onClick={connectResume}>Use Resume</Button>
 
-        <Button>Generate Cover Letter</Button>
+        <Button onClick={handleCoverLetter}>Generate Cover Letter</Button>
       </div>
 
       {job?.resumeId && (

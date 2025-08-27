@@ -90,7 +90,7 @@ export const user = createTable("user", {
     .notNull(),
 });
 
-export const session = pgTable("session", {
+export const session = createTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),

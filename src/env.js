@@ -9,6 +9,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     GOOGLE_CREDENTIALS_JSON: z.string(),
+    GEMINI_API_KEY: z.string(),
     BETTER_AUTH_SECRET: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -29,6 +30,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     GOOGLE_CREDENTIALS_JSON: process.env.GOOGLE_CREDENTIALS_JSON,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,

@@ -97,7 +97,7 @@ export function JobForm({ job }: Props) {
 
       {/* Submit Buttons */}
       <div className="flex gap-4 pt-4">
-        <Button type="submit">Create job</Button>
+        <Button type="submit">Save</Button>
         <Link href="/dashboard/job">
           <Button type="button" variant="outline">
             Cancel
