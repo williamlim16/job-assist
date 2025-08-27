@@ -17,9 +17,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Eye, Edit3, Download, MoreHorizontal, Search } from "lucide-react";
+import {
+  Eye,
+  Edit3,
+  Download,
+  MoreHorizontal,
+  Search,
+  Trash,
+} from "lucide-react";
 import type { SelectResume } from "@/server/db/schema";
 import Link from "next/link";
+import { Dialog } from "@radix-ui/react-dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { deleteResumeById } from "@/server/services/resume-service";
 
 type Props = {
   resume: SelectResume[];
@@ -46,6 +61,25 @@ export default function ResumeTable({ resume }: Props) {
 
     return matchesSearch;
   });
+
+  const handleDeleteClick = (resume: SelectResume) => {
+    setResumeToDelete(resume);
+    setDeleteDialogOpen(true);
+  };
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [resumeToDelete, setResumeToDelete] = useState<SelectResume | null>(
+    null,
+  );
+
+  const handleDeleteConfirm = async () => {
+    if (!resumeToDelete) {
+      return;
+    }
+    await deleteResumeById(resumeToDelete.id);
+    setDeleteDialogOpen(false);
+    setResumeToDelete(null);
+  };
 
   return (
     <div className="space-y-4">
@@ -105,6 +139,13 @@ export default function ResumeTable({ resume }: Props) {
                           Edit
                         </DropdownMenuItem>
                       </Link>
+
+                      <DropdownMenuItem
+                        onClick={() => handleDeleteClick(resume)}
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -113,6 +154,30 @@ export default function ResumeTable({ resume }: Props) {
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete the
+              resume
+              {resumeToDelete?.title} and remove it from your data.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4 flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteConfirm}>
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

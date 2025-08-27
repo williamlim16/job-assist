@@ -4,6 +4,7 @@ import { createEditResumeSchema } from "@/lib/validation-schema/resume";
 import { parseWithZod } from "@conform-to/zod";
 import { ResumeRepository } from "../repository/resume-repository";
 import type { SelectResume } from "../db/schema";
+import { revalidatePath } from "next/cache";
 
 export async function createEditResume(prevState: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
@@ -49,4 +50,23 @@ export async function getResumeList() {
 export async function getResumeById(id: SelectResume["id"]) {
   const resumeRepository = new ResumeRepository();
   return await resumeRepository.findById(id);
+}
+
+export async function deleteResumeById(id: SelectResume["id"]) {
+  const resumeRepository = new ResumeRepository();
+
+  revalidatePath("/dashboard/resume");
+
+  resumeRepository.delete(id).catch((error) => {
+    console.error(error);
+    return {
+      success: false,
+      error: "Database error",
+    };
+  });
+
+  return {
+    success: true,
+    error: undefined,
+  };
 }
