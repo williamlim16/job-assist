@@ -150,7 +150,7 @@ export default function JobTable({ job }: Props) {
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
               This action cannot be undone. This will permanently delete the job
-              "{jobToDelete?.title}" and remove it from your data.
+              {jobToDelete?.title} and remove it from your data.
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 flex justify-end gap-2">
