@@ -23,6 +23,7 @@ export function JobForm({ job }: Props) {
       id: job?.id,
       url: job?.url,
       description: job?.description,
+      companyName: job?.companyName,
       resumeId: job?.resumeId,
       title: job?.title,
     },
@@ -59,6 +60,19 @@ export function JobForm({ job }: Props) {
           defaultValue: fields.title.defaultValue,
           id: fields.title.id,
           name: fields.title.name,
+          type: "text",
+        }}
+      />
+
+      <FormInput
+        label="URL reference"
+        description="URL for the job posting"
+        errors={fields.url.errors}
+        required={false}
+        inputProps={{
+          defaultValue: fields.url.defaultValue,
+          id: fields.url.id,
+          name: fields.url.name,
           type: "text",
         }}
       />
