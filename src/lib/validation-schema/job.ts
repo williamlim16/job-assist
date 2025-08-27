@@ -7,4 +7,5 @@ export const createEditJobSchema = z.object({
   title: z.string({ description: "Title is required" }),
   resumeId: z.number().optional(),
   coverLetter: z.string().optional(),
+  companyName: z.string().optional(),
 });

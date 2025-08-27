@@ -62,6 +62,20 @@ export function JobForm({ job }: Props) {
           type: "text",
         }}
       />
+
+      <FormInput
+        label="Company Name"
+        description="Name of the company"
+        errors={fields.companyName.errors}
+        required={false}
+        inputProps={{
+          defaultValue: fields.companyName.defaultValue,
+          id: fields.companyName.id,
+          name: fields.companyName.name,
+          type: "text",
+        }}
+      />
+
       {/* Content Input */}
       <FormTextArea
         required={true}

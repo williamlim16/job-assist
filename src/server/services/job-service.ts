@@ -24,6 +24,7 @@ export async function createEditJob(prevState: unknown, formData: FormData) {
         url: submission.value.url,
         resumeId: submission.value.resumeId,
         coverLetter: submission.value.coverLetter,
+        companyName: submission.value.companyName,
       })
       .catch((error) => {
         return submission.reply({
@@ -34,8 +35,12 @@ export async function createEditJob(prevState: unknown, formData: FormData) {
   }
   jobRepository
     .save({
-      title: submission.value.title,
       description: submission.value.description,
+      title: submission.value.title,
+      url: submission.value.url,
+      resumeId: submission.value.resumeId,
+      coverLetter: submission.value.coverLetter,
+      companyName: submission.value.companyName,
     })
     .catch((error) => {
       return submission.reply({

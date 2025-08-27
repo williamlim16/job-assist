@@ -57,6 +57,7 @@ export const job = createTable("job", (d) => ({
   description: d.text().notNull(),
   url: d.text(),
   coverLetter: d.text(),
+  companyName: d.text(),
   status: jobStatusEnum().default("draft"),
   resumeId: d.integer().references(() => resume.id),
   dateApplied: d.timestamp({ withTimezone: true }),
@@ -73,7 +74,7 @@ export type NullishJob = SelectResume | undefined;
 
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
-export const user = pgTable("user", {
+export const user = createTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
@@ -102,7 +103,7 @@ export const session = pgTable("session", {
     .references(() => user.id, { onDelete: "cascade" }),
 });
 
-export const account = pgTable("account", {
+export const account = createTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -120,7 +121,7 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const verification = pgTable("verification", {
+export const verification = createTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
