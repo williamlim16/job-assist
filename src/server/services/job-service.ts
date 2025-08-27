@@ -4,6 +4,8 @@ import { parseWithZod } from "@conform-to/zod";
 import { JobRepository } from "../repository/job-repository";
 import type { SelectJob, SelectResume } from "../db/schema";
 import { createEditJobSchema } from "@/lib/validation-schema/job";
+import { success } from "better-auth";
+import { revalidatePath } from "next/cache";
 
 export async function createEditJob(prevState: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
@@ -69,6 +71,23 @@ export async function saveResumeReference(
       };
     });
 
+  return {
+    success: true,
+    error: undefined,
+  };
+}
+
+export async function deleteJobById(id: SelectJob["id"]) {
+  const jobRepository = new JobRepository();
+
+  revalidatePath("/dashboard/job");
+  jobRepository.delete(id).catch((error) => {
+    console.error(error);
+    return {
+      success: false,
+      error: "Error database",
+    };
+  });
   return {
     success: true,
     error: undefined,
