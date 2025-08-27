@@ -58,7 +58,7 @@ export const job = createTable("job", (d) => ({
   url: d.text(),
   coverLetter: d.text(),
   companyName: d.text(),
-  status: jobStatusEnum().default("draft"),
+  status: jobStatusEnum().default("draft").notNull(),
   resumeId: d.integer().references(() => resume.id),
   dateApplied: d.timestamp({ withTimezone: true }),
   createdAt: d

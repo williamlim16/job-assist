@@ -28,6 +28,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { deleteJobById } from "@/server/services/job-service";
+import { Badge } from "@/components/ui/badge";
+import { B } from "node_modules/better-auth/dist/shared/better-auth.DnUZno9_";
 
 type Props = {
   job: SelectJob[];
@@ -72,6 +74,52 @@ export default function JobTable({ job }: Props) {
     setJobToDelete(null);
   };
 
+  function toTitleCase(str: string) {
+    return str.replace(
+      /\w\S*/g,
+      (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase(),
+    );
+  }
+  const StatusBadge = ({ status }: { status: SelectJob["status"] }) => {
+    const normalizedStatus = status.toLowerCase();
+    let colorClasses = "";
+
+    // Determine the Tailwind classes based on the status.
+    switch (normalizedStatus) {
+      case "applied":
+        colorClasses =
+          "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200";
+        break;
+      case "lead":
+        colorClasses =
+          "bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-200";
+        break;
+      case "accepted":
+        colorClasses =
+          "bg-green-100 text-green-800 border-green-200 hover:bg-green-200";
+        break;
+      case "rejected":
+        colorClasses =
+          "bg-red-100 text-red-800 border-red-200 hover:bg-red-200";
+        break;
+      case "draft":
+      default:
+        colorClasses =
+          "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200";
+        break;
+    }
+
+    // Common styling classes for the badge.
+    const baseClasses =
+      "inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+
+    return (
+      <Badge className={`${baseClasses} ${colorClasses}`}>
+        {toTitleCase(status)}
+      </Badge>
+    );
+  };
+
   return (
     <div className="space-y-4">
       {/* Search and Filter */}
@@ -93,6 +141,7 @@ export default function JobTable({ job }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Updated At</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
@@ -102,6 +151,10 @@ export default function JobTable({ job }: Props) {
             {filteredData.map((job) => (
               <TableRow key={job.id}>
                 <TableCell className="font-medium">{job.title}</TableCell>
+
+                <TableCell className="font-medium">
+                  <StatusBadge status={job.status} />
+                </TableCell>
                 <TableCell className="text-muted-foreground">
                   {job.createdAt ? (
                     <ClientFormattedDate dateString={job.createdAt} />
