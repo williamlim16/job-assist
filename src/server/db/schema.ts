@@ -17,6 +17,10 @@ export const resume = createTable("resume", (d) => ({
   title: d.text().notNull(),
   filePath: d.text(),
   content: d.text(),
+  userId: d
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -61,6 +65,10 @@ export const job = createTable("job", (d) => ({
   status: jobStatusEnum().default("draft").notNull(),
   resumeId: d.integer().references(() => resume.id),
   dateApplied: d.timestamp({ withTimezone: true }),
+  userId: d
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -88,6 +96,7 @@ export const user = createTable("user", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: text("role").default("user").notNull(),
 });
 
 export const session = createTable("session", {
