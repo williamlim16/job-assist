@@ -3,6 +3,7 @@
 import { loginSchema, registerSchema } from "@/lib/validation-schema/auth";
 import { parseWithZod } from "@conform-to/zod";
 import { auth } from "../auth";
+import { redirect } from "next/navigation";
 
 export async function registerUser(prevState: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
@@ -35,4 +36,6 @@ export async function loginUser(prevState: unknown, formData: FormData) {
       password: submission.value.password,
     },
   });
+
+  redirect("/dashboard/job");
 }

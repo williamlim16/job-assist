@@ -1,8 +1,20 @@
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { LoginForm } from "./login-form";
+import { auth } from "@/server/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const head = await headers();
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (session) {
+    redirect("/dashboard/job");
+  }
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
